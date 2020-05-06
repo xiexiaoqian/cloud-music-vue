@@ -10,6 +10,7 @@ import MuseUI from 'muse-ui'
 import 'muse-ui/dist/muse-ui.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+axios.defaults.baseURL = 'http://localhost:8080'
 
 Vue.use(ElementUI)
 Vue.use(MuseUI)
@@ -20,7 +21,7 @@ Vue.config.productionTip = false
 import global_ from '@/utils/Global'
 Vue.prototype.GLOBAL = global_
 
-// 导航钩子，全局钩子
+// 路由导航守卫，当路由发生变化的时候，我们想要做的事情，这就是导航守卫的重点
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('token')
   let isLogin

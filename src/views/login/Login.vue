@@ -50,8 +50,8 @@ export default {
       ],
       argeeRules: [{ validate: (val) => !!val, message: '必须同意用户协议' }],
       validateForm: {
-        username: '',
-        password: '',
+        username: 'xxq',
+        password: '123456',
         isAgree: false
       },
       verifyCode: '',
@@ -61,7 +61,7 @@ export default {
     }
   },
   created() {
-    this.axios.get(this.GLOBAL.baseUrl + '/captcha?name=' + this.validateForm.username, { responseType: 'blob' }).then((res) => {
+    this.axios.get('/captcha?name=' + this.validateForm.username, { responseType: 'blob' }).then((res) => {
       console.log(res.headers)
       let img = this.$refs.codeImg
       let url = window.URL.createObjectURL(res.data)
@@ -76,7 +76,7 @@ export default {
         console.log('form valid: ', result)
         this.axios({
           method: 'post',
-          url: this.GLOBAL.baseUrl + '/sysAdmin/login',
+          url: '/sysAdmin/login',
           data: {
             name: this.validateForm.username,
             password: this.validateForm.password,
@@ -108,6 +108,7 @@ export default {
               //只有一个角色
               const roleId = res.data.data.admin.roles[0].roleId
               alert(roleId)
+              localStorage.setItem('roleId', roleId)
               this.$router.push({
                 path: '/',
                 query: {
@@ -143,6 +144,7 @@ export default {
     gotoIndex(roleId) {
       //带着用户选择的roleId跳到首页
       alert(roleId)
+      localStorage.setItem('roleId', roleId)
       this.$router.push({
         path: '/',
         query: {

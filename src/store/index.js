@@ -4,9 +4,9 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('token'),
-    roleId: '',
-    admin: JSON.parse(localStorage.getItem('admin')),
-    menuList: JSON.parse(localStorage.getItem('menuList'))
+    name: '',
+    avatar: localStorage.getItem('admin').avatar,
+    menuList: null
   },
   mutations: {
     setToken(state, data) {
@@ -15,11 +15,23 @@ const store = new Vuex.Store({
     setAdmin(state, data) {
       state.admin = data
     },
+    setId(state, data) {
+      state.id = data
+    },
+    setName(state, data) {
+      state.name = data
+    },
+    setAvatar(state, data) {
+      state.avatar = data
+    },
     setMenuList(state, data) {
       state.menuList = data
     },
-    setRoleId(state, data) {
-      state.roleId = data
+    refreshAdmin(state, data) {
+      state.admin = data
+    },
+    refreshMenuList(state, data) {
+      state.menuList = data
     }
   },
   actions: {}

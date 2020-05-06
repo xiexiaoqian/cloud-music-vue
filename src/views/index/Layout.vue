@@ -41,13 +41,13 @@
                   <v-list-item two-line :class="miniVariant && 'px-0'">
                     <router-link to="/profile">
                       <v-list-item-avatar>
-                        <img :src="admin.avatar" />
+                        <img :src="avatar" />
                       </v-list-item-avatar>
                     </router-link>
 
                     <v-list-item-content>
                       <v-list-item-title><h3 class="gutter link">Cloud Music</h3> </v-list-item-title>
-                      <v-list-item-subtitle class="gutter link">{{ admin.name }}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="gutter link">{{ name }}</v-list-item-subtitle>
                     </v-list-item-content>
                   </v-list-item>
 
@@ -111,11 +111,13 @@ export default {
     }
   },
   created() {
-    //取得前一个页面传过来的roleId
-    let roleId = this.$route.query.roleId
-    console.log(roleId)
+    // //取得前一个页面传过来的roleId
+    // let roleId = this.$route.query.roleId
+    // console.log(roleId)
+
+    let roleId = localStorage.getItem('roleId')
     //携带roleId和token（全局拦截器已经设置）向后端请求菜单
-    this.axios.get(this.GLOBAL.baseUrl + '/sysRole?roleId=' + roleId).then((res) => {
+    this.axios.get('/sysRole?roleId=' + roleId).then((res) => {
       console.log(roleId)
       this.$store.commit('setMenuList', JSON.stringify(res.data.data.menus))
       localStorage.setItem('menuList', JSON.stringify(res.data.data.menus))
@@ -148,10 +150,22 @@ export default {
     }
   },
   computed: {
-    // bg() {
-    //   // return this.background ? 'https://picsum.photos/1920/1080?random' : undefined
-    //   return '../assets/images/login-bg.jpg'
-    // }
+    avatar: {
+      get: function() {
+        return this.$store.state.avatar
+      },
+      set: function(newValue) {
+        this.$store.commit('setAvatar', newValue)
+      }
+    },
+    name: {
+      get: function() {
+        return this.$store.state.name
+      },
+      set: function(newValue) {
+        this.$store.commit('setName', newValue)
+      }
+    }
   }
 }
 </script>
