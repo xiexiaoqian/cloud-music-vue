@@ -18,6 +18,7 @@
         <mu-form-item>
           <mu-button color="primary" @click="submit">提交</mu-button>
           <mu-button @click="clear">重置</mu-button>
+          <mu-button @click="login">GitHub</mu-button>
         </mu-form-item>
       </mu-form>
     </mu-container>
@@ -51,7 +52,7 @@ export default {
       argeeRules: [{ validate: (val) => !!val, message: '必须同意用户协议' }],
       validateForm: {
         username: 'xxq',
-        password: '123456',
+        password: '123123',
         isAgree: false
       },
       verifyCode: '',
@@ -87,6 +88,8 @@ export default {
             //存token
             localStorage.setItem('token', res.data.data.token)
             this.$store.commit('setToken', res.data.data.token)
+            // avatar
+            this.$store.commit('setAvatar', res.data.data.admin.avatar)
             let admin = {
               id: res.data.data.admin.id,
               name: res.data.data.admin.name,
@@ -107,7 +110,6 @@ export default {
             } else {
               //只有一个角色
               const roleId = res.data.data.admin.roles[0].roleId
-              alert(roleId)
               localStorage.setItem('roleId', roleId)
               this.$router.push({
                 path: '/',
@@ -141,9 +143,15 @@ export default {
         isAgree: false
       }
     },
+    login() {
+      const authorize_uri = 'https://github.com/login/oauth/authorize'
+      const client_id = '9efef0e723337971a918'
+      const redirect_uri = 'http://localhost:8080/oauth2/code/github'
+      window.location.href = `${authorize_uri}?client_id=${client_id}&redirect_uri=${redirect_uri}`
+    },
     gotoIndex(roleId) {
       //带着用户选择的roleId跳到首页
-      alert(roleId)
+      // alert(roleId)
       localStorage.setItem('roleId', roleId)
       this.$router.push({
         path: '/',

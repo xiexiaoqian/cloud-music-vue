@@ -5,7 +5,7 @@ const store = new Vuex.Store({
   state: {
     token: localStorage.getItem('token'),
     name: '',
-    avatar: localStorage.getItem('admin').avatar,
+    avatar: '',
     menuList: null
   },
   mutations: {

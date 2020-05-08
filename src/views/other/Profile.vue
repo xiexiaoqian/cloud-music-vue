@@ -119,23 +119,28 @@ export default {
       })
     },
     updateInfo() {
-      let sysAdminDto = {
-        id: JSON.parse(localStorage.getItem('admin')).id,
-        // name: this.newName,
-        password: this.confirmPassword
+      if (this.confirmPassword.length < 6) {
+        alert('新密码小于六位，不能修改')
+      } else {
+        let sysAdminDto = {
+          id: JSON.parse(localStorage.getItem('admin')).id,
+          // name: this.newName,
+          password: this.confirmPassword
+        }
+        this.axios({
+          method: 'post',
+          url: '/sysAdmin/profile',
+          data: sysAdminDto
+        }).then((res) => {
+          console.log(res.data.data)
+          this.show = !this.show
+          this.password = ''
+          this.confirmPassword = ''
+          // this.$store.commit('setName', this.newName)
+        })
+        alert('修改成功')
+        console.log(this.confirmPassword)
       }
-      this.axios({
-        method: 'post',
-        url: '/sysAdmin/profile',
-        data: sysAdminDto
-      }).then((res) => {
-        console.log(res.data.data)
-        this.show = !this.show
-        this.password = ''
-        this.confirmPassword = ''
-        // this.$store.commit('setName', this.newName)
-      })
-      console.log(this.confirmPassword)
     }
   }
 }

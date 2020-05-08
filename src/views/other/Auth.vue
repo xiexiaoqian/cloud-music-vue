@@ -1,96 +1,39 @@
 <template>
   <v-app>
-    <v-app-bar color="cyan" dense dark height="80" app>
-      <v-app-bar-nav-icon @click="$router.push('/')"></v-app-bar-nav-icon>
-      <v-toolbar-title>Page title</v-toolbar-title>
+    <template>
+      <v-card>
+        <v-toolbar color="teal" dark flat>
+          <v-app-bar-nav-icon to="/login"></v-app-bar-nav-icon>
 
-      <v-spacer></v-spacer>
+          <v-toolbar-title>GitHub</v-toolbar-title>
 
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
+          <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-menu left bottom>
-        <template v-slot:activator="{ on }">
-          <v-btn icon v-on="on">
-            <v-icon>mdi-dots-vertical</v-icon>
+          <v-btn icon>
+            <v-avatar>
+              <v-img :src="avatar"></v-img>
+            </v-avatar>
           </v-btn>
-        </template>
 
-        <v-list>
-          <v-list-item link>
-            <v-list-item-title>设置</v-list-item-title>
-          </v-list-item>
-          <v-list-item link>
-            <v-list-item-title @click="logout">退出</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
+          <v-btn icon>
+            <v-icon>mdi-magnify</v-icon>
+          </v-btn>
+
+          <v-btn icon>
+            <v-icon @click="logout">mdi-dots-vertical</v-icon>
+          </v-btn>
+
+          <template v-slot:extension>
+            <v-tabs v-model="model" centered slider-color="yellow">
+              <v-tab v-for="(item, index) in tabs" :key="index" :to="item.itemPath"> {{ item.tab }} </v-tab>
+            </v-tabs>
+          </template>
+        </v-toolbar>
+      </v-card>
+    </template>
     <v-content>
       <v-container>
-        <v-row justify="center">
-          <v-col cols="12" md="6">
-            <v-list>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="red">mdi-heart</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> html_url:{{ user.html_url }} </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="orange">mdi-bell</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> id:{{ user.id }} </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="cyan">mdi-account</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> name:{{ user.name }} </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="cyan">mdi-heart</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> followers:{{ user.followers }} </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="cyan">mdi-heart</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> following:{{ user.following }} </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="cyan">mdi-heart</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> public_repos:{{ user.public_repos }} </v-list-item-title>
-              </v-list-item>
-              <v-list-item>
-                <v-list-item-icon>
-                  <v-icon color="cyan">mdi-heart</v-icon>
-                </v-list-item-icon>
-                <v-list-item-title> public_repos:{{ user.public_repos }} </v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-col>
-          <v-col cols="12" md="4">
-            <v-card>
-              <v-card-title>
-                <v-img :src="user.avatar_url"></v-img>
-              </v-card-title>
-              <v-card-text>
-                <p>{{ user.name }}</p>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
+        <router-view></router-view>
       </v-container>
     </v-content>
   </v-app>
@@ -101,7 +44,25 @@ export default {
   name: 'Auth',
   data() {
     return {
-      user: null
+      user: null,
+      model: 'tab-2',
+      avatar: '',
+      tabs: [
+        {
+          tab: 'Repositry',
+          itemPath: '/auth/repositry'
+        },
+        {
+          tab: 'Following',
+          itemPath: '/auth/following'
+        },
+        {
+          tab: 'Followers',
+          itemPath: '/auth/followers'
+        }
+      ],
+      text:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
     }
   },
   components: {},
@@ -109,15 +70,16 @@ export default {
     console.log('回调')
     let user = this.$route.query.user
     if (user) {
-      console.log(user)
       this.user = JSON.parse(user)
       localStorage.setItem('token', this.user.id)
       localStorage.setItem('user', user)
     }
+    this.avatar = JSON.parse(localStorage.getItem('user')).avatar_url
   },
   mounted() {},
   methods: {
     logout() {
+      alert('退出登录')
       localStorage.removeItem('token')
       localStorage.removeItem('user')
       this.$router.push('/login')

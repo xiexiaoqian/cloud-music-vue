@@ -58,13 +58,36 @@ const routes = [
         path: '/permission',
         name: 'Permission',
         component: () => import('../views/permission/Permission.vue')
+      },
+      {
+        path: '/gitLoginPage',
+        name: 'GitLoginPage',
+        component: () => import('../views/login/GitLoginPage.vue')
       }
     ]
   },
   {
     path: '/auth',
     name: 'Auth',
-    component: () => import('../views/other/Auth.vue')
+    component: () => import('../views/other/Auth.vue'),
+    redirect: '/auth/repositry',
+    children: [
+      {
+        path: '/auth/repositry',
+        name: 'Repositry',
+        component: () => import('../views/other/Repositry.vue')
+      },
+      {
+        path: '/auth/following',
+        name: 'Following',
+        component: () => import('../views/other/Following.vue')
+      },
+      {
+        path: '/auth/followers',
+        name: 'Followers',
+        component: () => import('../views/other/Followers.vue')
+      }
+    ]
   },
   {
     path: '/login',
