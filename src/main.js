@@ -57,6 +57,10 @@ axios.interceptors.request.use((config) => {
   return config
 })
 
+//全局组件
+import GLOBAL_Component from './utils/GlobalComponents'
+Vue.use(GLOBAL_Component)
+
 new Vue({
   router,
   store,

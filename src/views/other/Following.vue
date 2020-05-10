@@ -1,15 +1,16 @@
 <template>
   <v-container>
-    <FollowComp :followers="followings" :type="type"></FollowComp>
+    <!-- <FollowComp :followers="followings" :type="type"></FollowComp> -->
+    <my-list :list="followings" @cancel-follow="unFollow"></my-list>
   </v-container>
 </template>
 
 <script>
-import FollowComp from '../../components/FollowComp'
+// import FollowComp from '../../components/FollowComp'
 export default {
   name: 'Following',
   components: {
-    FollowComp
+    // FollowComp
   },
   data() {
     return {
@@ -40,6 +41,10 @@ export default {
         }
         console.log(this.followings)
       })
+    },
+    unFollow(index) {
+      alert(index)
+      this.followings.splice(index, 1)
     }
   }
 }

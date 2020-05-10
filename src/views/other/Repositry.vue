@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <!-- <div v-for=""> -->
-    <RepositryComp :repositries="repos"></RepositryComp>
+    <RepositryComp :repositries="repos" @cancel-follow="splice($event, index)"></RepositryComp>
     <!-- </div> -->
   </v-container>
 </template>
@@ -41,6 +41,10 @@ export default {
         }
         console.log(this.repos)
       })
+    },
+    splice(event, index) {
+      alert(index)
+      this.repos.splice(index, 1)
     }
   },
   computed: {}

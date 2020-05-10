@@ -7,7 +7,11 @@
           <v-list-item-subtitle>{{ item.description }}</v-list-item-subtitle>
         </v-list-item-content>
 
-        <v-btn small><v-icon left>mdi-star</v-icon> Star</v-btn>
+        <!-- <v-btn small><v-icon left>mdi-star</v-icon> Star</v-btn> -->
+        <my-button outlined color="#E0E0E0" @my-click="handleClick($event, index)">
+          <v-icon slot="pre-icon" small class="mr-2">mdi-star</v-icon>
+          <span>star</span>
+        </my-button>
       </v-list-item>
 
       <v-card-actions>
@@ -31,6 +35,12 @@ export default {
       default: () => []
     }
   },
-  data: () => ({})
+  data: () => ({}),
+  methods: {
+    handleClick(event, index) {
+      console.log(index)
+      this.$emit('cancel-follow', index)
+    }
+  }
 }
 </script>
